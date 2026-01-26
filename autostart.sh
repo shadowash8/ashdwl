@@ -4,4 +4,5 @@ if [ -f ~/.cache/wal/wal ]; then
     swaybg -i $(cat ~/.cache/wal/wal) &
 fi
 
-xrdb -merge ~/.Xresources
+xrdb -merge ~/.Xresources &
+dunst &
