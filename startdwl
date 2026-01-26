@@ -1,0 +1,7 @@
+#!/bin/sh
+while true; do
+    dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1
+    
+    # If you want to break the loop, create a file like /tmp/stop-dwl
+    [ -f /tmp/stop-dwl ] && break
+done
