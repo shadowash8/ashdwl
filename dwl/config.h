@@ -82,7 +82,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static char dmenumon[2] = "0"; 
 static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu='dmenu -m \"$0\"' --term=" TERMINAL, dmenumon, NULL };
-// static const char *clipcmd[]      = SHCMD("greenclip print | dmenu -s -l 20 -p 'Clipboard' | xargs -r -d'\\n' -I '{}' greenclip print '{}'");
+static const char *clipcmd[] = { "sh", "-c", "cliphist list | dmenu | cliphist decode | wl-copy", NULL };
 static const char *browsercmd[]   = { "qbpm", "choose", "-m dmenu", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "pcmanfm-qt", NULL };
@@ -94,21 +94,29 @@ static const char *notescmd[] = SHCMD("notes --menu dmenu");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
 
+/* volume */
+static const char *volup[]   = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+4 dwlblocks", NULL };
+static const char *voldown[] = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+4 dwlblocks", NULL };
+static const char *volmute[] = { "sh", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+4 dwlblocks", NULL };
+
+/* brightness */
+static const char *brup[]   = { "sh", "-c", "brightnessctl set +5% && pkill -RTMIN+5 dwlblocks", NULL };
+static const char *brdown[] = { "sh", "-c", "brightnessctl set 5%- && pkill -RTMIN+5 dwlblocks", NULL };
+
 static const Key keys[] = {
-	/* Note that Shift changes certain key codes: 2 -> at, etc. */
 	/* modifier                  key                  function          argument */
 	{ MODKEY,                    XKB_KEY_space,       spawn,            {.v = dmenucmd } },
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            {.v = termcmd} },
-//	{ MODKEY,                       XK_v,      spawn,          {.v = clipcmd } },
-	{ MODKEY,                    XKB_KEY_b,           spawn,          {.v = browsercmd } },
-	{ MODKEY,                    XKB_KEY_f,           spawn,          {.v = filescmd } },
-	{ MODKEY,                    XKB_KEY_w,           spawn,          {.v = emacscmd } },
-	{ MODKEY,                    XKB_KEY_l,           spawn,          {.v = lockcmd } },
-	{ MODKEY,                    XKB_KEY_p,           spawn,          {.v = phonecmd } },
-	{ MODKEY,                    XKB_KEY_m,           spawn,          {.v = musiccmd } },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r,           spawn,          {.v = websearchcmd } },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       spawn,          {.v = notescmd } },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,          {.v = wallpapercmd } },
+	{ MODKEY,                    XKB_KEY_v,           spawn,            {.v = clipcmd } },
+	{ MODKEY,                    XKB_KEY_b,           spawn,            {.v = browsercmd } },
+	{ MODKEY,                    XKB_KEY_f,           spawn,            {.v = filescmd } },
+	{ MODKEY,                    XKB_KEY_w,           spawn,            {.v = emacscmd } },
+	{ MODKEY,                    XKB_KEY_l,           spawn,            {.v = lockcmd } },
+	{ MODKEY,                    XKB_KEY_p,           spawn,            {.v = phonecmd } },
+	{ MODKEY,                    XKB_KEY_m,           spawn,            {.v = musiccmd } },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r,           spawn,            {.v = websearchcmd } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       spawn,            {.v = notescmd } },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
 
     /* Navigation */
 	{ MODKEY,                    XKB_KEY_n,           focusstack,       {.i = +1} },
@@ -117,6 +125,8 @@ static const Key keys[] = {
     /* Resizing */
     { MODKEY,                    XKB_KEY_e,           setmfact,         {.f = -0.05f} },
 	{ MODKEY,                    XKB_KEY_i,           setmfact,         {.f = +0.05f} },
+    { MODKEY,                    XKB_KEY_g,           togglefloating,   {0} },
+	{ MODKEY,                    XKB_KEY_a,           togglefullscreen, {0} },
 
 	/* Master Area */
 	{ MODKEY,                    XKB_KEY_h,           incnmaster,       {.i = +1} },
@@ -124,20 +134,26 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_z,           zoom,             {0} },
 	{ MODKEY,                    XKB_KEY_Tab,         view,             {0} },
 
+    /* Kill */
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           quit,             {0} },
 	{ MODKEY,                    XKB_KEY_q,           killclient,       {0} },
+
+    /* Layouts */
 	{ MODKEY,                    XKB_KEY_t,           setlayout,        {.v = &layouts[0]} },
 	{ MODKEY,                    XKB_KEY_f,           setlayout,        {.v = &layouts[1]} },
 	{ MODKEY,                    XKB_KEY_m,           setlayout,        {.v = &layouts[2]} },
 	{ MODKEY,                    XKB_KEY_k,           setlayout,        {0} },
  	{ MODKEY,                    XKB_KEY_x,           togglebar,        {0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_k,           togglefloating,   {0} },
-	{ MODKEY,                    XKB_KEY_a,           togglefullscreen, {0} },
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
+
+    /* Monitors */
 	{ MODKEY,                    XKB_KEY_comma,       focusmon,         {.i = WLR_DIRECTION_LEFT} },
 	{ MODKEY,                    XKB_KEY_period,      focusmon,         {.i = WLR_DIRECTION_RIGHT} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_less,        tagmon,           {.i = WLR_DIRECTION_LEFT} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_greater,     tagmon,           {.i = WLR_DIRECTION_RIGHT} },
+
+    /* Tags */
 	TAGKEYS(          XKB_KEY_1, XKB_KEY_exclam,                        0),
 	TAGKEYS(          XKB_KEY_2, XKB_KEY_at,                            1),
 	TAGKEYS(          XKB_KEY_3, XKB_KEY_numbersign,                    2),
@@ -147,8 +163,14 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_7, XKB_KEY_ampersand,                     6),
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           quit,             {0} },
 
+    /* System Keys */
+    { 0, XKB_KEY_XF86AudioRaiseVolume,  spawn, {.v = volup} },
+    { 0, XKB_KEY_XF86AudioLowerVolume,  spawn, {.v = voldown} },
+    { 0, XKB_KEY_XF86AudioMute,         spawn, {.v = volmute} },
+    { 0, XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = brup} },
+    { 0, XKB_KEY_XF86MonBrightnessDown, spawn, {.v = brdown} },
+    
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
 
