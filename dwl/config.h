@@ -8,17 +8,23 @@ static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
 static const char *fonts[]                 = {"Iosevka:size=11"};
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
+static const float default_opacity_unfocus = 0.70f;
+static const float default_opacity_focus   = 0.90f;
 
 /* tagging */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
 /* logging */
 static int log_level = WLR_ERROR;
 
-static const Rule rules[] = {
-	/* app_id             title       tags mask     isfloating   monitor */
-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
-};
+ /* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
+ static const Rule rules[] = {
+	/* app_id             title       tags mask     isfloating   alpha unfocus      monitor */
+ 	/* examples: */
+    { "Gimp_EXAMPLE",     NULL,       0,            1,           default_opacity_unfocus, -1 }, /* Start on currently visible tags floating, not tiled */
+    { "qutebrowser",      NULL,       1,            0,           1.00,                    -1 }, /* Start on currently visible tags floating, not tiled */
+	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           1.00,                    -1 }, /* Start on ONLY tag "9" */
+ };
 
 /* layout(s) */
 static const Layout layouts[] = {
@@ -147,6 +153,12 @@ static const Key keys[] = {
  	{ MODKEY,                    XKB_KEY_x,           togglebar,        {0} },
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
+
+    /* Opacity */
+    { MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_d,          setopacityunfocus, {.f = +0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_c,          setopacityunfocus, {.f = -0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT, XKB_KEY_d, setopacityfocus, {.f = +0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT, XKB_KEY_c, setopacityfocus, {.f = -0.1f} },
 
     /* Monitors */
 	{ MODKEY,                    XKB_KEY_comma,       focusmon,         {.i = WLR_DIRECTION_LEFT} },
