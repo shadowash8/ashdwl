@@ -5,9 +5,9 @@ static const Block blocks[] = {
 
 	{"",     "sb-network",						20,		5},
 
-	{"[V] ", "sb-volume",						1,		4},
+	{"[V] ", "sb-volume",						20,		4},
 
-	{"[D] ", "date '+%a %b %d %I:%M %p'",				30,		1},
+	{"[D] ", "date '+%a %b %d %I:%M %p'",	    60,		1},
 };
 
 //sets delimeter between status commands. NULL character ('\0') means no delimeter.
