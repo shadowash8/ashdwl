@@ -3,9 +3,8 @@
 . ~/.shellprofile
 
 # ENV Vars
-export QT_QPA_PLATFORM="xcb"
+export QT_QPA_PLATFORM="wayland"
 export QT_QPA_PLATFORMTHEME="qt6ct"
-export QT_WAYLAND_RECONNECT=1  # Required for Qt6 apps to survive
 
 wal -R &
 
