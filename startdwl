@@ -1,7 +1,13 @@
 #!/bin/sh
-while true; do
-    dwlblocks | dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1
-    
-    # If you want to break the loop, create a file like /tmp/stop-dwl
-    [ -f /tmp/stop-dwl ] && break
-done
+# Inherit vars
+. ~/.shellprofile
+
+# ENV Vars
+export QT_QPA_PLATFORM="xcb"
+export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_WAYLAND_RECONNECT=1  # Required for Qt6 apps to survive
+
+wal -R &
+
+# Use wl-restart with --env flag for dwl
+dwlblocks | dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1
