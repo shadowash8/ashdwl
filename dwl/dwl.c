@@ -2512,9 +2512,17 @@ void
 scenebuffersetopacity(struct wlr_scene_buffer *buffer, int sx, int sy, void *data)
 {
 	Client *c = data;
-	/* xdg-popups are children of Client.scene, we do not have to worry about
-	 * messing with them. */
-	wlr_scene_buffer_set_opacity(buffer, c->isfullscreen ? 1 : c->opacity);
+    float opacity;
+	
+	if (c->type == X11) {
+		// Force X11 apps to use focus/unfocus opacity (they can't override it)
+		opacity = (c == focustop(c->mon)) ? c->opacity_focus : c->opacity_unfocus;
+	} else {
+		// Wayland apps use their stored opacity (respects rules)
+		opacity = c->opacity;
+	}
+
+    wlr_scene_buffer_set_opacity(buffer, c->isfullscreen ? 1 : opacity);
 }
 
 void
@@ -3497,6 +3505,11 @@ createnotifyx11(struct wl_listener *listener, void *data)
 	c->surface.xwayland = xsurface;
 	c->type = X11;
 	c->bw = client_is_unmanaged(c) ? 0 : borderpx;
+
+	// Use the same defaults as Wayland apps
+	c->opacity_unfocus = default_opacity_unfocus;
+	c->opacity_focus = default_opacity_focus;
+	c->opacity = default_opacity_unfocus;
 
 	/* Listen to the various events it can emit */
 	LISTEN(&xsurface->events.associate, &c->associate, associatex11);
