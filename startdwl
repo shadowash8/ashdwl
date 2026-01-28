@@ -1,6 +1,7 @@
 #!/bin/sh
 # Inherit vars
 . ~/.shellprofile
+export PATH="$HOME/.ashdwl/scripts:$PATH"
 
 # ENV Vars
 export QT_QPA_PLATFORM="wayland"
