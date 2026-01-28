@@ -5,7 +5,7 @@ static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
 static const unsigned int borderpx         = 1;  /* border pixel of windows */
 static const int showbar                   = 1; /* 0 means no bar */
-static const int topbar                    = 1; /* 0 means bottom bar */
+static const int topbar                    = 0; /* 0 means bottom bar */
 static const char *fonts[]                 = {"Iosevka:size=11"};
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
 static const float default_opacity_unfocus = 0.70f;
@@ -101,7 +101,7 @@ static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
 
 /* volume */
-static const char *volup[]   = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+4 dwlblocks", NULL };
+static const char *volup[]   = { "sh", "-c", "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+4 dwlblocks", NULL };
 static const char *voldown[] = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+4 dwlblocks", NULL };
 static const char *volmute[] = { "sh", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+4 dwlblocks", NULL };
 
@@ -155,10 +155,10 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
 
     /* Opacity */
-    { MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_d,          setopacityunfocus, {.f = +0.1f} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_c,          setopacityunfocus, {.f = -0.1f} },
-	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT, XKB_KEY_d, setopacityfocus, {.f = +0.1f} },
-	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT, XKB_KEY_c, setopacityfocus, {.f = -0.1f} },
+    { MODKEY,                    XKB_KEY_d,          setopacityunfocus, {.f = +0.1f} },
+	{ MODKEY,                    XKB_KEY_c,          setopacityunfocus, {.f = -0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_d, setopacityfocus, {.f = +0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_c, setopacityfocus, {.f = -0.1f} },
 
     /* Monitors */
 	{ MODKEY,                    XKB_KEY_comma,       focusmon,         {.i = WLR_DIRECTION_LEFT} },
