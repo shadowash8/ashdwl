@@ -1,13 +1,15 @@
 #!/bin/sh
-# Inherit vars
-. ~/.shellprofile
-export PATH="$HOME/.ashdwl/scripts:$PATH"
 
-# ENV Vars
+# Inherit profile
+. ~/.shellprofile
+
+# Environment
+export PATH="$HOME/.ashdwl/scripts:$PATH"
+export XKB_DEFAULT_LAYOUT="us"
+export XCURSOR_SIZE=24
 export QT_QPA_PLATFORM="wayland"
 export QT_QPA_PLATFORMTHEME="qt6ct"
 
-wal -R &
-
-# Use wl-restart with --env flag for dwl
+# Run dwl
+# Everything inside autostart.sh handles the pywal/xrdb timing
 dwlblocks | dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1

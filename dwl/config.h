@@ -3,7 +3,7 @@
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
-static const unsigned int borderpx         = 1;  /* border pixel of windows */
+static const unsigned int borderpx         = 2;  /* border pixel of windows */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 0; /* 0 means bottom bar */
 static const char *fonts[]                 = {"Iosevka:size=11"};
@@ -17,13 +17,10 @@ static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 /* logging */
 static int log_level = WLR_ERROR;
 
- /* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
  static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   alpha unfocus      monitor */
- 	/* examples: */
-    { "Gimp_EXAMPLE",     NULL,       0,            1,           default_opacity_unfocus, -1 }, /* Start on currently visible tags floating, not tiled */
-    { "qutebrowser",      NULL,       1,            0,           1.00,                    -1 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           1.00,                    -1 }, /* Start on ONLY tag "9" */
+    { "mpv",              NULL,       0,            1,           1.00,                    -1 },
+    { "xeyes",            NULL,       1 << 8,       1,           1,                       -1 },
  };
 
 /* layout(s) */
@@ -83,20 +80,19 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "kitty"
+#define TERMINAL "foot"
 
 /* commands */
-static char dmenumon[2] = "0"; 
-static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu='dmenu -m \"$0\"' --term=" TERMINAL, dmenumon, NULL };
-static const char *clipcmd[] = { "sh", "-c", "cliphist list | dmenu | cliphist decode | wl-copy", NULL };
+static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
+static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
 static const char *browsercmd[]   = { "qbpm", "choose", "-m dmenu", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "pcmanfm-qt", NULL };
 static const char *lockcmd[] = { "swaylock", NULL };
 static const char *emacscmd[]     = { "emacsclient", "-c", NULL };
-static const char *phonecmd[]     = SHCMD("connect --menu dmenu");
-static const char *websearchcmd[] = SHCMD("websearch --menu dmenu");
-static const char *notescmd[] = SHCMD("notes --menu dmenu");
+static const char *phonecmd[]     = SHCMD("connect");
+static const char *websearchcmd[] = SHCMD("websearch");
+static const char *notescmd[] = SHCMD("notes");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
 
