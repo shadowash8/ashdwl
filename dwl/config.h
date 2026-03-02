@@ -5,8 +5,8 @@ static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
 static const unsigned int borderpx         = 2;  /* border pixel of windows */
 static const int showbar                   = 1; /* 0 means no bar */
-static const int topbar                    = 0; /* 0 means bottom bar */
-static const char *fonts[]                 = {"Iosevka:size=11"};
+static const int topbar                    = 1; /* 0 means bottom bar */
+static const char *fonts[]                 = {"monospace:size=11"};
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
 static const float default_opacity_unfocus = 0.70f;
 static const float default_opacity_focus   = 0.90f;
@@ -46,7 +46,6 @@ static const MonitorRule monrules[] = {
 /* keyboard */
 static const struct xkb_rule_names xkb_rules = {
 	.layout = "us",
-	.variant = "colemak_dh",
 	.options = NULL,
 };
 
@@ -85,10 +84,10 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
-static const char *browsercmd[]   = { "qbpm", "choose", "-m dmenu", NULL };
+static const char *browsercmd[]   = { "firefox", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
-static const char *filescmd[]     = { "pcmanfm-qt", NULL };
-static const char *lockcmd[] = { "swaylock", NULL };
+static const char *filescmd[]     = { "pcmanfm", NULL };
+static const char *lockcmd[] = { "lock.sh", NULL };
 static const char *emacscmd[]     = { "emacsclient", "-c", NULL };
 static const char *phonecmd[]     = SHCMD("connect");
 static const char *websearchcmd[] = SHCMD("websearch");
@@ -97,13 +96,11 @@ static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
 
 /* volume */
-static const char *volup[]   = { "sh", "-c", "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+4 dwlblocks", NULL };
-static const char *voldown[] = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+4 dwlblocks", NULL };
-static const char *volmute[] = { "sh", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+4 dwlblocks", NULL };
-
-/* brightness */
-static const char *brup[]   = { "sh", "-c", "brightnessctl set +5% && pkill -RTMIN+5 dwlblocks", NULL };
-static const char *brdown[] = { "sh", "-c", "brightnessctl set 5%- && pkill -RTMIN+5 dwlblocks", NULL };
+static const char *volup[]      = { "osd", "volume", "5%+",      NULL };
+static const char *voldown[]    = { "osd", "volume", "5%-",      NULL };
+static const char *volmute[]    = { "osd", "volume", "toggle",   NULL };
+static const char *briup[]      = { "osd", "brightness", "10%+", NULL };
+static const char *bridown[]    = { "osd", "brightness", "10%-", NULL };
 
 static const Key keys[] = {
 	/* modifier                  key                  function          argument */
@@ -113,7 +110,7 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_b,           spawn,            {.v = browsercmd } },
 	{ MODKEY,                    XKB_KEY_f,           spawn,            {.v = filescmd } },
 	{ MODKEY,                    XKB_KEY_w,           spawn,            {.v = emacscmd } },
-	{ MODKEY,                    XKB_KEY_l,           spawn,            {.v = lockcmd } },
+	{ MODKEY,                    XKB_KEY_U,           spawn,            {.v = lockcmd } },
 	{ MODKEY,                    XKB_KEY_p,           spawn,            {.v = phonecmd } },
 	{ MODKEY,                    XKB_KEY_m,           spawn,            {.v = musiccmd } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r,           spawn,            {.v = websearchcmd } },
@@ -121,20 +118,20 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
 
     /* Navigation */
-	{ MODKEY,                    XKB_KEY_n,           focusstack,       {.i = +1} },
-	{ MODKEY,                    XKB_KEY_o,           focusstack,       {.i = -1} },
+	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
+	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
 
     /* Resizing */
-    { MODKEY,                    XKB_KEY_e,           setmfact,         {.f = -0.05f} },
-	{ MODKEY,                    XKB_KEY_i,           setmfact,         {.f = +0.05f} },
+    { MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
+	{ MODKEY,                    XKB_KEY_l,           setmfact,         {.f = +0.05f} },
     { MODKEY,                    XKB_KEY_g,           togglefloating,   {0} },
 	{ MODKEY,                    XKB_KEY_a,           togglefullscreen, {0} },
-    { MODKEY,                    XKB_KEY_s,           togglesticky,     {0} },
+    { MODKEY,                    XKB_KEY_d,           togglesticky,     {0} },
 
 	/* Master Area */
-	{ MODKEY,                    XKB_KEY_h,           incnmaster,       {.i = +1} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_h,           incnmaster,       {.i = -1} },
-	{ MODKEY,                    XKB_KEY_z,           zoom,             {0} },
+	{ MODKEY,                    XKB_KEY_b,           zoom,             {0} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_b,           incnmaster,       {.i = +1} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_b,           incnmaster,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_Tab,         view,             {0} },
 
     /* Kill */
@@ -142,19 +139,19 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_q,           killclient,       {0} },
 
     /* Layouts */
-	{ MODKEY,                    XKB_KEY_t,           setlayout,        {.v = &layouts[0]} },
-	{ MODKEY,                    XKB_KEY_f,           setlayout,        {.v = &layouts[1]} },
-	{ MODKEY,                    XKB_KEY_m,           setlayout,        {.v = &layouts[2]} },
-	{ MODKEY,                    XKB_KEY_k,           setlayout,        {0} },
- 	{ MODKEY,                    XKB_KEY_x,           togglebar,        {0} },
+	{ MODKEY,                    XKB_KEY_c,           setlayout,        {.v = &layouts[0]} },
+	{ MODKEY,                    XKB_KEY_x,           setlayout,        {.v = &layouts[1]} },
+	{ MODKEY,                    XKB_KEY_z,           setlayout,        {.v = &layouts[2]} },
+	{ MODKEY,                    XKB_KEY_n,           setlayout,        {0} },
+ 	{ MODKEY,                    XKB_KEY_y,           togglebar,        {0} },
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
 
     /* Opacity */
-    { MODKEY,                    XKB_KEY_d,          setopacityunfocus, {.f = +0.1f} },
-	{ MODKEY,                    XKB_KEY_c,          setopacityunfocus, {.f = -0.1f} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_d, setopacityfocus, {.f = +0.1f} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_c, setopacityfocus, {.f = -0.1f} },
+    { MODKEY,                    XKB_KEY_r,          setopacityunfocus, {.f = +0.1f} },
+	{ MODKEY,                    XKB_KEY_s,          setopacityunfocus, {.f = -0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r, setopacityfocus, {.f = +0.1f} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_s, setopacityfocus, {.f = -0.1f} },
 
     /* Monitors */
 	{ MODKEY,                    XKB_KEY_comma,       focusmon,         {.i = WLR_DIRECTION_LEFT} },
@@ -177,8 +174,8 @@ static const Key keys[] = {
     { 0, XKB_KEY_XF86AudioRaiseVolume,  spawn, {.v = volup} },
     { 0, XKB_KEY_XF86AudioLowerVolume,  spawn, {.v = voldown} },
     { 0, XKB_KEY_XF86AudioMute,         spawn, {.v = volmute} },
-    { 0, XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = brup} },
-    { 0, XKB_KEY_XF86MonBrightnessDown, spawn, {.v = brdown} },
+    { 0, XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = briup} },
+    { 0, XKB_KEY_XF86MonBrightnessDown, spawn, {.v = bridown} },
     
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },

@@ -4,11 +4,10 @@
 # We don't use '&' because we need these files to exist before the next steps.
 wal -R
 
-/usr/libexec/lxqt-policykit-agent &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 dunst &
+swww-daemon &
 emacs --daemon &
-kdeconnectd &
-libinput-gestures-setup start &
 
 # Handle the XWayland/XRDB mess in a delayed block.
 (
