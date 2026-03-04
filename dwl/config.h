@@ -144,6 +144,7 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_n,           setlayout,        {0} },
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
+    { MODKEY,                    XKB_KEY_y,           togglebar,        {0} },
 
     /* Opacity */
     { MODKEY,                    XKB_KEY_r,          setopacityunfocus, {.f = +0.1f} },
