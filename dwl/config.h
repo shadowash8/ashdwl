@@ -9,7 +9,7 @@ static const int topbar                    = 1; /* 0 means bottom bar */
 static const char *fonts[]                 = {"monospace:size=11"};
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
 static const float default_opacity_unfocus = 0.70f;
-static const float default_opacity_focus   = 0.90f;
+static const float default_opacity_focus   = 0.95f;
 
 /* tagging */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -84,7 +84,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
-static const char *browsercmd[]   = { "firefox", NULL };
+static const char *browsercmd[]   = { "glide-bin", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "pcmanfm", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
@@ -94,6 +94,7 @@ static const char *websearchcmd[] = SHCMD("websearch");
 static const char *notescmd[] = SHCMD("notes");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
+static const char *wificmd[]     = { "rofi", "-show", "wifi", "-modi", "wifi:iwdrofimenu", NULL };
 
 /* volume */
 static const char *volup[]      = { "osd", "volume", "5%+",      NULL };
@@ -107,12 +108,13 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_space,       spawn,            {.v = dmenucmd } },
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_v,           spawn,            {.v = clipcmd } },
-	{ MODKEY,                    XKB_KEY_b,           spawn,            {.v = browsercmd } },
+	{ MODKEY,                    XKB_KEY_t,           spawn,            {.v = browsercmd } },
 	{ MODKEY,                    XKB_KEY_f,           spawn,            {.v = filescmd } },
 	{ MODKEY,                    XKB_KEY_w,           spawn,            {.v = emacscmd } },
-	{ MODKEY,                    XKB_KEY_U,           spawn,            {.v = lockcmd } },
+	{ MODKEY,                    XKB_KEY_u,           spawn,            {.v = lockcmd } },
 	{ MODKEY,                    XKB_KEY_p,           spawn,            {.v = phonecmd } },
 	{ MODKEY,                    XKB_KEY_m,           spawn,            {.v = musiccmd } },
+	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            {.v = wificmd } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r,           spawn,            {.v = websearchcmd } },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       spawn,            {.v = notescmd } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            {.v = wallpapercmd } },

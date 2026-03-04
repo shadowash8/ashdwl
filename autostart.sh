@@ -6,8 +6,8 @@ wal -R
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 dunst &
-swww-daemon &
 emacs --daemon &
+swaybg -i $(cat ~/.cache/wal/wal) &
 
 # Handle the XWayland/XRDB mess in a delayed block.
 (
