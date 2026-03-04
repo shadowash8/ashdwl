@@ -3,7 +3,13 @@
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
+static const int smartgaps                 = 0;  /* 1 means no outer gap when there is only one window */
 static const unsigned int borderpx         = 2;  /* border pixel of windows */
+static const int monoclegaps               = 1;  /* 1 means outer gaps in monocle layout */
+static const unsigned int gappih           = 8; /* horiz inner gap between windows */
+static const unsigned int gappiv           = 8; /* vert inner gap between windows */
+static const unsigned int gappoh           = 8; /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov           = 8; /* vert outer gap between windows and screen edge */
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
 static const float default_opacity_unfocus = 0.70f;
 static const float default_opacity_focus   = 0.95f;
@@ -81,17 +87,16 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
-static const char *browsercmd[]   = { "glide-bin", NULL };
+static const char *browsercmd[]   = { "glide-bin", "--new-instance", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "pcmanfm", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
-static const char *emacscmd[]     = { "emacsclient", "-c", NULL };
+static const char *emacscmd[]     = { "emacs", NULL };
 static const char *phonecmd[]     = SHCMD("connect");
 static const char *websearchcmd[] = SHCMD("websearch");
 static const char *notescmd[] = SHCMD("notes");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
-static const char *wificmd[]     = { "rofi", "-show", "wifi", "-modi", "wifi:iwdrofimenu", NULL };
 
 /* volume */
 static const char *volup[]      = { "osd", "volume", "5%+",      NULL };
@@ -106,12 +111,11 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_v,           spawn,            {.v = clipcmd } },
 	{ MODKEY,                    XKB_KEY_t,           spawn,            {.v = browsercmd } },
-	{ MODKEY,                    XKB_KEY_f,           spawn,            {.v = filescmd } },
+	{ MODKEY,                    XKB_KEY_e,           spawn,            {.v = filescmd } },
 	{ MODKEY,                    XKB_KEY_w,           spawn,            {.v = emacscmd } },
 	{ MODKEY,                    XKB_KEY_u,           spawn,            {.v = lockcmd } },
 	{ MODKEY,                    XKB_KEY_p,           spawn,            {.v = phonecmd } },
 	{ MODKEY,                    XKB_KEY_m,           spawn,            {.v = musiccmd } },
-	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            {.v = wificmd } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r,           spawn,            {.v = websearchcmd } },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       spawn,            {.v = notescmd } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
@@ -136,6 +140,24 @@ static const Key keys[] = {
     /* Kill */
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           quit,             {0} },
 	{ MODKEY,                    XKB_KEY_q,           killclient,       {0} },
+
+    /* Gaps */
+    { MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_h,          incgaps,       {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_l,          incgaps,       {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_H,      incogaps,      {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_L,      incogaps,      {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_CTRL,    XKB_KEY_h,      incigaps,      {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_CTRL,    XKB_KEY_l,      incigaps,      {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_0,          togglegaps,     {0} },
+	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_parenright,defaultgaps,    {0} },
+	{ MODKEY,                    XKB_KEY_y,          incihgaps,     {.i = +1 } },
+	{ MODKEY,                    XKB_KEY_o,          incihgaps,     {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_y,          incivgaps,     {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_o,          incivgaps,     {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_y,          incohgaps,     {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_o,          incohgaps,     {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Y,          incovgaps,     {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_O,          incovgaps,     {.i = -1 } },
 
     /* Layouts */
 	{ MODKEY,                    XKB_KEY_c,           setlayout,        {.v = &layouts[0]} },
