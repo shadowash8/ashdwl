@@ -40,9 +40,8 @@ static const Layout layouts[] = {
  * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899 */
 static const MonitorRule monrules[] = {
    /* name        mfact  nmaster scale layout       rotate/reflect                x    y
-    * example of a HiDPI laptop monitor:
-    { "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 }, */
-	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+    * example of a HiDPI laptop monitor: */
+    { "eDP-1",    0.5f,  1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   0,  0 },
 	/* default monitor rule: can be changed but cannot be eliminated; at least one monitor rule must exist */
 };
 
@@ -96,7 +95,7 @@ static const char *phonecmd[]     = SHCMD("connect");
 static const char *websearchcmd[] = SHCMD("websearch");
 static const char *notescmd[] = SHCMD("notes");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
-static const char *wallpapercmd[]     = { "walmenu", NULL };
+static const char *wallpapercmd[]     = SHCMD("walmenu");
 
 /* volume */
 static const char *volup[]      = { "osd", "volume", "5%+",      NULL };
