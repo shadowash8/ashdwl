@@ -4,6 +4,7 @@
 # We don't use '&' because we need these files to exist before the next steps.
 wal -R
 
+# Startup
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 waybar &
 dunst &
@@ -23,7 +24,7 @@ swaybg -i $(cat ~/.cache/wal/wal) &
             xrdb -merge ~/.Xresources
         fi
         
-        # Check every 5 seconds—low overhead, but fast recovery
+        # Check every 30 seconds—low overhead, but fast recovery
         sleep 30
     done
 ) &

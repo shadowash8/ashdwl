@@ -11,5 +11,4 @@ export QT_QPA_PLATFORM="wayland"
 export QT_QPA_PLATFORMTHEME="qt6ct"
 
 # Run dwl
-# Everything inside autostart.sh handles the pywal/xrdb timing
-dwlblocks | dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1
+dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1
