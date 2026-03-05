@@ -10,5 +10,7 @@ export XCURSOR_SIZE=24
 export QT_QPA_PLATFORM="wayland"
 export QT_QPA_PLATFORMTHEME="qt6ct"
 
+alias waybar="waybar -c ~/.ashdwl/waybar/config.jsonc -s ~/.ashdwl/waybar/style.css"
+
 # Run dwl
 dwl -s ~/.ashdwl/autostart.sh > /tmp/dwl.log 2>&1

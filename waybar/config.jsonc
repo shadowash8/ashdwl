@@ -1,0 +1,76 @@
+{
+  "layer": "bottom",
+  "position": "top",
+  "height": 26,
+  "reload_style_on_change": true,
+  "modules-left": [
+    "dwl/tags",
+    "dwl/window"
+  ],
+  "modules-center": [],
+  "modules-right": [
+    "power-profiles-daemon",
+    "pulseaudio",
+    "network",
+    "battery",
+    "clock",
+    "tray",
+  ],
+
+  "network": {
+    "format-wifi": "[W] {signalStrength}%",
+    "format-ethernet": "[E]",
+    "format-disconnected": "[X]",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+    "tooltip-format-ethernet": "{ifname} (Wired)",
+    "on-click": "rofi -show wifi -modi 'wifi:iwdrofimenu'"
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 20
+    },
+    "format": "[B] {capacity}%",
+    "format-charging": "[B]$ {capacity}%",
+    "format-plugged": "[B]$ {capacity}%",
+    "format-alt": "[B] {time}"
+  },
+
+  "pulseaudio": {
+    "scroll-step": 2,
+    "format": "[V] {volume}%",
+    "format-muted": "[MUTE]",
+    "format-bluetooth": "[V]BT {volume}%",
+    "on-click": "pavucontrol"
+  },
+
+  "backlight": {
+    "format": "[L] {percent}%"
+  },
+
+  "power-profiles-daemon": {
+    "format": "[P] {icon}",
+    "format-icons": {
+      "default": "P",
+      "performance": "#",
+      "balanced": "@",
+      "power-saver": "!"
+    }
+  },
+
+  "dwl/window": {
+    "format": "[{layout}] {title}",
+    "max-length": 69,
+  },
+
+  "clock": {
+    "format": "[C] {:%a, %b %d, %I:%M %p}",
+    "interval": 60
+  },
+
+  "tray": {
+    "icon-size": 14,
+    "spacing": 10
+  }
+}
