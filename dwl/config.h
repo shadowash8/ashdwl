@@ -1,4 +1,4 @@
-#include "/home/ashwin/.cache/wal/colors-wal-dwl.h"
+#include "/home/ashwin/.cache/cwal/colors-wal-dwl.h"
 
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
@@ -11,6 +11,8 @@ static const unsigned int gappiv           = 8; /* vert inner gap between window
 static const unsigned int gappoh           = 8; /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov           = 8; /* vert outer gap between windows and screen edge */
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
+static int enableautoswallow = 1; /* enables autoswallowing newly spawned clients */
+static float swallowborder = 1.0f; /* add this multiplied by borderpx to border when a client is swallowed */
 static const float default_opacity_unfocus = 0.70f;
 static const float default_opacity_focus   = 0.95f;
 
@@ -21,9 +23,11 @@ static const float default_opacity_focus   = 0.95f;
 static int log_level = WLR_ERROR;
 
  static const Rule rules[] = {
-	/* app_id             title       tags mask     isfloating   alpha unfocus      monitor */
-    { "mpv",              NULL,       0,            1,           1.00,                    -1 },
-    { "xeyes",            NULL,       1 << 8,       1,           1,                       -1 },
+    /* app_id             title       tags mask     isfloating alpha unfocus  isterm   noswallow   monitor */
+    { "foot",             NULL,       0,            0,           1,           1,       1,          -1 },
+    { "mpv",              NULL,       0,            1,           1.00,        0,       0,          -1 },
+    { NULL,    "Picture-in-Picture",  0,            1,           1.00,        0,       0,          -1 },
+    { "xeyes",            NULL,       1 << 8,       1,           1,           0,       0,          -1 },
  };
 
 /* layout(s) */
@@ -88,7 +92,7 @@ static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
 static const char *browsercmd[]   = { "glide-bin", "--new-instance", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
-static const char *filescmd[]     = { "pcmanfm", NULL };
+static const char *filescmd[]     = { "thunar", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
 static const char *emacscmd[]     = { "emacs", NULL };
 static const char *phonecmd[]     = SHCMD("connect");
@@ -103,6 +107,14 @@ static const char *voldown[]    = { "osd", "volume", "5%-",      NULL };
 static const char *volmute[]    = { "osd", "volume", "toggle",   NULL };
 static const char *briup[]      = { "osd", "brightness", "10%+", NULL };
 static const char *bridown[]    = { "osd", "brightness", "10%-", NULL };
+
+/* screenshots */
+static const char *screenshotcmd[]  = SHCMD("screenshot");
+static const char *screenclipcmd[]  = SHCMD("screenshot clip");
+static const char *screenocrcmd[]   = SHCMD("screenshot ocr");
+static const char *screenwincmd[]   = SHCMD("screenshot window");
+static const char *screenfullcmd[]  = SHCMD("screenshot full");
+static const char *screencolorcmd[] = SHCMD("screenshot color");
 
 static const Key keys[] = {
 	/* modifier                  key                  function          argument */
@@ -119,16 +131,18 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       spawn,            {.v = notescmd } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
 
-    /* Navigation */
+  /* Navigation */
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
 
-    /* Resizing */
-    { MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
+  /* Resizing */
+  { MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
 	{ MODKEY,                    XKB_KEY_l,           setmfact,         {.f = +0.05f} },
-    { MODKEY,                    XKB_KEY_g,           togglefloating,   {0} },
+  { MODKEY,                    XKB_KEY_g,           togglefloating,   {0} },
 	{ MODKEY,                    XKB_KEY_a,           togglefullscreen, {0} },
-    { MODKEY,                    XKB_KEY_d,           togglesticky,     {0} },
+  { MODKEY,                    XKB_KEY_d,           togglesticky,     {0} },
+  { MODKEY,                    XKB_KEY_i,           toggleswallow,  {0} },
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_i,           toggleautoswallow,{0} },
 
 	/* Master Area */
 	{ MODKEY,                    XKB_KEY_b,           zoom,             {0} },
@@ -136,12 +150,12 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_b,           incnmaster,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_Tab,         view,             {0} },
 
-    /* Kill */
+  /* Kill */
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           quit,             {0} },
 	{ MODKEY,                    XKB_KEY_q,           killclient,       {0} },
 
-    /* Gaps */
-    { MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_h,          incgaps,       {.i = +1 } },
+  /* Gaps */
+  { MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_h,          incgaps,       {.i = +1 } },
 	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_l,          incgaps,       {.i = -1 } },
 	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_H,      incogaps,      {.i = +1 } },
 	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_L,      incogaps,      {.i = -1 } },
@@ -158,7 +172,7 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Y,          incovgaps,     {.i = +1 } },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_O,          incovgaps,     {.i = -1 } },
 
-    /* Layouts */
+  /* Layouts */
 	{ MODKEY,                    XKB_KEY_c,           setlayout,        {.v = &layouts[0]} },
 	{ MODKEY,                    XKB_KEY_x,           setlayout,        {.v = &layouts[1]} },
 	{ MODKEY,                    XKB_KEY_z,           setlayout,        {.v = &layouts[2]} },
@@ -167,8 +181,8 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
     { MODKEY,                    XKB_KEY_y,           togglebar,        {0} },
 
-    /* Opacity */
-    { MODKEY,                    XKB_KEY_r,          setopacityunfocus, {.f = +0.1f} },
+  /* Opacity */
+  { MODKEY,                    XKB_KEY_r,          setopacityunfocus, {.f = +0.1f} },
 	{ MODKEY,                    XKB_KEY_s,          setopacityunfocus, {.f = -0.1f} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r, setopacityfocus, {.f = +0.1f} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_s, setopacityfocus, {.f = -0.1f} },
@@ -179,7 +193,7 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_less,        tagmon,           {.i = WLR_DIRECTION_LEFT} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_greater,     tagmon,           {.i = WLR_DIRECTION_RIGHT} },
 
-    /* Tags */
+  /* Tags */
 	TAGKEYS(          XKB_KEY_1, XKB_KEY_exclam,                        0),
 	TAGKEYS(          XKB_KEY_2, XKB_KEY_at,                            1),
 	TAGKEYS(          XKB_KEY_3, XKB_KEY_numbersign,                    2),
@@ -190,13 +204,21 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
 
-    /* System Keys */
-    { 0, XKB_KEY_XF86AudioRaiseVolume,  spawn, {.v = volup} },
-    { 0, XKB_KEY_XF86AudioLowerVolume,  spawn, {.v = voldown} },
-    { 0, XKB_KEY_XF86AudioMute,         spawn, {.v = volmute} },
-    { 0, XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = briup} },
-    { 0, XKB_KEY_XF86MonBrightnessDown, spawn, {.v = bridown} },
-    
+  /* System Keys */
+  { 0, XKB_KEY_XF86AudioRaiseVolume,  spawn, {.v = volup} },
+  { 0, XKB_KEY_XF86AudioLowerVolume,  spawn, {.v = voldown} },
+  { 0, XKB_KEY_XF86AudioMute,         spawn, {.v = volmute} },
+  { 0, XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = briup} },
+  { 0, XKB_KEY_XF86MonBrightnessDown, spawn, {.v = bridown} },
+
+  /* Screenshots */
+  { 0,                                     XKB_KEY_Print,  spawn,  {.v = screenshotcmd  } },
+  { WLR_MODIFIER_CTRL,                     XKB_KEY_Print,  spawn,  {.v = screenclipcmd  } },
+  { WLR_MODIFIER_SHIFT,                    XKB_KEY_Print,  spawn,  {.v = screenocrcmd   } },
+  { MODKEY,                                XKB_KEY_Print,  spawn,  {.v = screenwincmd   } },
+  { MODKEY|WLR_MODIFIER_ALT,              XKB_KEY_Print,  spawn,  {.v = screenfullcmd  } },
+  { WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT, XKB_KEY_Print,  spawn,  {.v = screencolorcmd } },
+
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
 

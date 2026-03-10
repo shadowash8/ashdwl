@@ -1,76 +1,87 @@
 {
-  "layer": "bottom",
-  "position": "top",
-  "height": 26,
-  "reload_style_on_change": true,
-  "modules-left": [
-    "dwl/tags",
-    "dwl/window"
-  ],
-  "modules-center": [],
-  "modules-right": [
-    "power-profiles-daemon",
-    "pulseaudio",
-    "network",
-    "battery",
-    "clock",
-    "tray",
-  ],
-
-  "network": {
-    "format-wifi": "[W] {signalStrength}%",
-    "format-ethernet": "[E]",
-    "format-disconnected": "[X]",
-    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-    "tooltip-format-ethernet": "{ifname} (Wired)",
-    "on-click": "rofi -show wifi -modi 'wifi:iwdrofimenu'"
-  },
-
-  "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 20
+    "layer": "bottom",
+    "position": "top",
+    "height": 26,
+    "reload_style_on_change": true,
+    "modules-left": [
+        "dwl/tags",
+        "dwl/window"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "power-profiles-daemon",
+        "pulseaudio",
+        "network",
+        "battery",
+        "clock",
+        "tray"
+    ],
+    "network": {
+        "format-wifi": "[W] {signalStrength}%",
+        "format-ethernet": "[E]",
+        "format-disconnected": "[X]",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname} (Wired)",
+        "on-click": "rofi -show wifi -modi 'wifi:iwdrofimenu'"
     },
-    "format": "[B] {capacity}%",
-    "format-charging": "[B]$ {capacity}%",
-    "format-plugged": "[B]$ {capacity}%",
-    "format-alt": "[B] {time}"
-  },
-
-  "pulseaudio": {
-    "scroll-step": 2,
-    "format": "[V] {volume}%",
-    "format-muted": "[MUTE]",
-    "format-bluetooth": "[V]BT {volume}%",
-    "on-click": "pavucontrol"
-  },
-
-  "backlight": {
-    "format": "[L] {percent}%"
-  },
-
-  "power-profiles-daemon": {
-    "format": "[P] {icon}",
-    "format-icons": {
-      "default": "P",
-      "performance": "#",
-      "balanced": "@",
-      "power-saver": "!"
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "[B] {capacity}%",
+        "format-charging": "[B]$ {capacity}%",
+        "format-plugged": "[B]$ {capacity}%",
+        "format-alt": "[B] {time}"
+    },
+    "pulseaudio": {
+        "scroll-step": 2,
+        "format": "[V] {volume}%",
+        "format-muted": "[MUTE]",
+        "format-bluetooth": "[V]BT {volume}%",
+        "on-click": "pavucontrol"
+    },
+    "backlight": {
+        "format": "[L] {percent}%"
+    },
+    "power-profiles-daemon": {
+        "format": "[P] {icon}",
+        "format-icons": {
+            "default": "P",
+            "performance": "#",
+            "balanced": "@",
+            "power-saver": "!"
+        }
+    },
+    "dwl/window": {
+        "format": "[{layout}] {title}",
+        "max-length": 69
+    },
+    "clock": {
+        "format": "[C] {:%a, %b %d, %I:%M %p}",
+        "interval": 60,
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "left",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    "tray": {
+        "icon-size": 14,
+        "spacing": 10
     }
-  },
-
-  "dwl/window": {
-    "format": "[{layout}] {title}",
-    "max-length": 69,
-  },
-
-  "clock": {
-    "format": "[C] {:%a, %b %d, %I:%M %p}",
-    "interval": 60
-  },
-
-  "tray": {
-    "icon-size": 14,
-    "spacing": 10
-  }
 }

@@ -1,4 +1,4 @@
-@import "../../.cache/wal/colors-waybar.css";
+@import "../../.cache/cwal/colors-waybar.css";
 
 * {
   font-family: "monospace";
@@ -7,8 +7,8 @@
 
 
 window#waybar { 
-  background-color: @color3; 
-  color: @foreground;    
+  background-color: @color2; 
+  color: @foregroud;    
 }
 
 
@@ -48,28 +48,27 @@ window#waybar {
 #workspaces button.active,
 #workspaces button.occupied,
 #tags button.occupied {
-    border-bottom: 1px solid @color3;
+    border-bottom: 1px solid @color2;
 }
 
 /* Focused/Visible States */
 #workspaces button.focused,
 #workspaces button.visible,
 #tags button.focused { 
-  background-color: @color3; 
-  color: @background;
+  background-color: @color2; 
 }
 
 /* Urgent States */
 #workspaces button.urgent,
 #tags button.urgent {
-  background-color: @color3;
+  background-color: @color2;
   color: @color0;
 }
 
 
 #custom-nowplaying,#window {
-  color: @color0;    
-  background-color: @color3; 
+  color: @foreground;    
+  background-color: @color2; 
   padding: 0px 10px 0px 10px;
 }
 
