@@ -52,6 +52,7 @@ static const MonitorRule monrules[] = {
 /* keyboard */
 static const struct xkb_rule_names xkb_rules = {
 	.layout = "us",
+    .variant = "colemak_dh",
 	.options = NULL,
 };
 
@@ -90,7 +91,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
-static const char *browsercmd[]   = { "glide-bin", "--new-instance", NULL };
+static const char *browsercmd[]   = { "helium-browser", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "thunar", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
@@ -121,8 +122,8 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_space,       spawn,            {.v = dmenucmd } },
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_v,           spawn,            {.v = clipcmd } },
-	{ MODKEY,                    XKB_KEY_t,           spawn,            {.v = browsercmd } },
-	{ MODKEY,                    XKB_KEY_e,           spawn,            {.v = filescmd } },
+	{ MODKEY,                    XKB_KEY_b,           spawn,            {.v = browsercmd } },
+	{ MODKEY,                    XKB_KEY_f,           spawn,            {.v = filescmd } },
 	{ MODKEY,                    XKB_KEY_w,           spawn,            {.v = emacscmd } },
 	{ MODKEY,                    XKB_KEY_u,           spawn,            {.v = lockcmd } },
 	{ MODKEY,                    XKB_KEY_p,           spawn,            {.v = phonecmd } },
@@ -132,22 +133,22 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
 
   /* Navigation */
-	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
-	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
+	{ MODKEY,                    XKB_KEY_n,           focusstack,       {.i = +1} },
+	{ MODKEY,                    XKB_KEY_e,           focusstack,       {.i = -1} },
 
   /* Resizing */
-  { MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
-	{ MODKEY,                    XKB_KEY_l,           setmfact,         {.f = +0.05f} },
+  { MODKEY,                    XKB_KEY_m,           setmfact,         {.f = -0.05f} },
+	{ MODKEY,                    XKB_KEY_i,           setmfact,         {.f = +0.05f} },
   { MODKEY,                    XKB_KEY_g,           togglefloating,   {0} },
 	{ MODKEY,                    XKB_KEY_a,           togglefullscreen, {0} },
-  { MODKEY,                    XKB_KEY_d,           togglesticky,     {0} },
-  { MODKEY,                    XKB_KEY_i,           toggleswallow,  {0} },
-  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_i,           toggleautoswallow,{0} },
+  { MODKEY,                    XKB_KEY_s,           togglesticky,     {0} },
+  { MODKEY,                    XKB_KEY_k,           toggleswallow,  {0} },
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_k,           toggleautoswallow,{0} },
 
 	/* Master Area */
-	{ MODKEY,                    XKB_KEY_b,           zoom,             {0} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_b,           incnmaster,       {.i = +1} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_b,           incnmaster,       {.i = -1} },
+	{ MODKEY,                    XKB_KEY_z,           zoom,             {0} },
+	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_z,           incnmaster,       {.i = +1} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_z,           incnmaster,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_Tab,         view,             {0} },
 
   /* Kill */
@@ -155,8 +156,8 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_q,           killclient,       {0} },
 
   /* Gaps */
-  { MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_h,          incgaps,       {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_l,          incgaps,       {.i = -1 } },
+  { MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_m,          incgaps,       {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_i,          incgaps,       {.i = -1 } },
 	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_H,      incogaps,      {.i = +1 } },
 	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_SHIFT,   XKB_KEY_L,      incogaps,      {.i = -1 } },
 	{ MODKEY|WLR_MODIFIER_ALT|WLR_MODIFIER_CTRL,    XKB_KEY_h,      incigaps,      {.i = +1 } },
@@ -167,23 +168,23 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_o,          incihgaps,     {.i = -1 } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_y,          incivgaps,     {.i = +1 } },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_o,          incivgaps,     {.i = -1 } },
-	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_y,          incohgaps,     {.i = +1 } },
-	{ MODKEY|WLR_MODIFIER_ALT,  XKB_KEY_o,          incohgaps,     {.i = -1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,   XKB_KEY_y,          incohgaps,     {.i = +1 } },
+	{ MODKEY|WLR_MODIFIER_ALT,   XKB_KEY_o,          incohgaps,     {.i = -1 } },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Y,          incovgaps,     {.i = +1 } },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_O,          incovgaps,     {.i = -1 } },
 
   /* Layouts */
-	{ MODKEY,                    XKB_KEY_c,           setlayout,        {.v = &layouts[0]} },
-	{ MODKEY,                    XKB_KEY_x,           setlayout,        {.v = &layouts[1]} },
-	{ MODKEY,                    XKB_KEY_z,           setlayout,        {.v = &layouts[2]} },
+	{ MODKEY,                    XKB_KEY_d,           setlayout,        {.v = &layouts[0]} },
+	{ MODKEY,                    XKB_KEY_c,           setlayout,        {.v = &layouts[1]} },
+	{ MODKEY,                    XKB_KEY_x,           setlayout,        {.v = &layouts[2]} },
 	{ MODKEY,                    XKB_KEY_n,           setlayout,        {0} },
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
-    { MODKEY,                    XKB_KEY_y,           togglebar,        {0} },
+  { MODKEY,                    XKB_KEY_l,           togglebar,        {0} },
 
   /* Opacity */
   { MODKEY,                    XKB_KEY_r,          setopacityunfocus, {.f = +0.1f} },
-	{ MODKEY,                    XKB_KEY_s,          setopacityunfocus, {.f = -0.1f} },
+	{ MODKEY,                    XKB_KEY_j,          setopacityunfocus, {.f = -0.1f} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_r, setopacityfocus, {.f = +0.1f} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_s, setopacityfocus, {.f = -0.1f} },
 
