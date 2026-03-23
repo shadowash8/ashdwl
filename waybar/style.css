@@ -11,81 +11,8 @@ window#waybar {
   color: @foregroud;    
 }
 
-
-.modules-left {
-  background-color: @color0; 
-  padding: 0px 0px 0px 0px;
-}
-
-
-.modules-right {
-  background-color: @background; 
-  padding: 0px 5px 0px 0px;
-}
-
-#workspaces,
-#tags {
-  border-radius: 0px;
-  margin-right: 4px;
-}
-
-#workspaces button,
-#tags button {
-  padding: 0px 8px; 
-  min-width: 1px;
-  border-radius: 0px;
-  color: @foreground;
-  background-color: transparent;
-}
-
-/* Empty/Default State */
-#workspaces button.empty,
-#tags button.empty {
-  color: @foreground;
-}
-
-/* Active/Occupied States */
-#workspaces button.active,
-#workspaces button.occupied,
-#tags button.occupied {
-    border-bottom: 1px solid @color2;
-}
-
-/* Focused/Visible States */
-#workspaces button.focused,
-#workspaces button.visible,
-#tags button.focused { 
-  background-color: @color2; 
-}
-
-/* Urgent States */
-#workspaces button.urgent,
-#tags button.urgent {
-  background-color: @color2;
-  color: @color0;
-}
-
-
-#custom-nowplaying,#window {
-  color: @foreground;    
-  background-color: @color2; 
-  padding: 0px 10px 0px 10px;
-}
-
-
-window#waybar.empty #window {
-  background-color: transparent;
-  color: transparent;
-}
-
-
-window#waybar.empty {
-  background-color: @color0; 
-}
-
-
-#workspaces,#clock,#battery,#backlight,#network,#bluetooth,#pulseaudio,#custom-expand,#tray,#power-profiles-daemon {
-  margin: 0px 8px 0px 8px;
+#clock,#network,#pulseaudio{
+  padding: 0px 8px 0px 8px;
   background-color: @color0; 
   color: @foreground;    
 }

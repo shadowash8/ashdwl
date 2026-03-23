@@ -5,8 +5,8 @@ ln -s ~/.ashdwl/waybar/ ~/.config/waybar
 
 # Startup
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-dbus-launch waybar &
 dunst &
+waybar &
 swaybg -i $(cat ~/.cache/cwal/cwal) &
 
 # Handle the XWayland/XRDB mess in a delayed block.

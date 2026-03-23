@@ -91,7 +91,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[] = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
-static const char *browsercmd[]   = { "helium-browser", NULL };
+static const char *browsercmd[]   = { "qbpm", "choose", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "thunar", NULL };
 static const char *lockcmd[] = { "lock.sh", NULL };
