@@ -104,6 +104,9 @@ static const char *websearchcmd[]   = SHCMD("websearch");
 static const char *notescmd[]       = SHCMD("notes");
 static const char *musiccmd[]       = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]   = SHCMD("walmenu");
+static const char *fuzzyfilescmd[]  = { "rofi", "-show", "recursivebrowser", NULL };
+static const char *sillycmd[]       = SHCMD("silly");
+static const char *solemncmd[]      = SHCMD("solemn");
 
 /* volume */
 static const char *volup[]          = { "osd", "volume", "5%+",      NULL };
@@ -131,7 +134,12 @@ static const Key keys[] = {
 	{ MOD,                      XKB_KEY_u,           spawn,            {.v = lockcmd } },
 	{ MOD,                      XKB_KEY_p,           spawn,            {.v = phonecmd } },
 	{ MOD,                      XKB_KEY_h,           spawn,            {.v = musiccmd } },
+	{ MOD,                      XKB_KEY_question,    spawn,            {.v = fuzzyfilescmd } },
 	{ MOD|CTRL,                 XKB_KEY_r,           spawn,            {.v = websearchcmd } },
+	{ MOD|SHIFT,                XKB_KEY_space,       spawn,            {.v = notescmd } },
+	{ MOD|CTRL,                 XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
+	{ MOD|ALT,                  XKB_KEY_comma,       spawn,            {.v = sillycmd } },
+	{ MOD|CTRL,                 XKB_KEY_comma,       spawn,            {.v = solemncmd } },
 	{ MOD|SHIFT,                XKB_KEY_space,       spawn,            {.v = notescmd } },
 	{ MOD|CTRL,                 XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
 
