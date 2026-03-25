@@ -6,9 +6,9 @@
 }
 
 window#waybar {
-  background-color: @color2;
+  background-color: @color4;
   color: @foregroud;
-  border: 1px solid @color2;
+  border: 1px solid @color4;
 }
 
 #clock,
