@@ -1,13 +1,11 @@
 #!/bin/sh
-
-rm ~/.config/waybar -r
-ln -s ~/.ashdwl/waybar/ ~/.config/waybar
-
 # Startup
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+hypridle &
 dunst &
-waybar &
-swaybg -i $(cat ~/.cache/cwal/cwal) &
+dbus-launch waybar &
+swaybg -i $(cat ~/.cache/ashwal/ashwal) &
+wlsunset -o eDP-1 -g 0.8 &
 
 # Handle the XWayland/XRDB mess in a delayed block.
 (
@@ -23,7 +21,7 @@ swaybg -i $(cat ~/.cache/cwal/cwal) &
             xrdb -merge ~/.Xresources
         fi
         
-        # Check every 30 seconds—low overhead, but fast recovery
+        # Check every 30 seconds—low overhead
         sleep 30
     done
 ) &
