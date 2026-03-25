@@ -1,20 +1,21 @@
-@import "../../.cache/cwal/colors-waybar.css";
+@import "../../.cache/ashwal/colors-waybar.css";
 
 * {
   font-family: "monospace";
   font-size: 14px;
 }
 
-
-window#waybar { 
-  background-color: @color2; 
-  color: @foregroud;    
+window#waybar {
+  background-color: @color2;
+  color: @foregroud;
+  border: 1px solid @color2;
 }
 
-#clock,#network,#pulseaudio{
+#clock,
+#network,
+#pulseaudio {
   padding: 0px 8px 0px 8px;
-  background-color: @color0; 
-  color: @foreground;    
+  background-color: @color0;
+  color: @foreground;
+  border: 1px solid @color2;
 }
-
-
