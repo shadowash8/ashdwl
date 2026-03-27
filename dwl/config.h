@@ -94,9 +94,9 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *dmenucmd[]       = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[]        = { "sh", "-c", "cliphist list | rofi -dmenu | cliphist decode | wl-copy", NULL };
-static const char *browsercmd[]     = { "zen-browser", NULL };
+static const char *browsercmd[]     = { "helium-browser", NULL };
 static const char *termcmd[]        = { TERMINAL, NULL };
-static const char *filescmd[]       = { "pcmanfm", NULL };
+static const char *filescmd[]       = { "thunar", NULL };
 static const char *lockcmd[]        = { "hyprlock", NULL };
 static const char *emacscmd[]       = { "emacs", NULL };
 static const char *phonecmd[]       = SHCMD("connect");
@@ -105,9 +105,6 @@ static const char *notescmd[]       = SHCMD("notes");
 static const char *musiccmd[]       = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]   = SHCMD("walmenu");
 static const char *fuzzyfilescmd[]  = { "rofi", "-show", "recursivebrowser", NULL };
-static const char *sillycmd[]       = SHCMD("silly");
-static const char *solemncmd[]      = SHCMD("solemn");
-
 /* volume */
 static const char *volup[]          = { "osd", "volume", "5%+",      NULL };
 static const char *voldown[]        = { "osd", "volume", "5%-",      NULL };
@@ -135,11 +132,8 @@ static const Key keys[] = {
 	{ MOD,                      XKB_KEY_p,           spawn,            {.v = phonecmd } },
 	{ MOD,                      XKB_KEY_h,           spawn,            {.v = musiccmd } },
 	{ MOD,                      XKB_KEY_question,    spawn,            {.v = fuzzyfilescmd } },
-	{ MOD|CTRL,                 XKB_KEY_r,           spawn,            {.v = websearchcmd } },
 	{ MOD|SHIFT,                XKB_KEY_space,       spawn,            {.v = notescmd } },
 	{ MOD|CTRL,                 XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
-	{ MOD|ALT,                  XKB_KEY_comma,       spawn,            {.v = sillycmd } },
-	{ MOD|CTRL,                 XKB_KEY_comma,       spawn,            {.v = solemncmd } },
 	{ MOD|SHIFT,                XKB_KEY_space,       spawn,            {.v = notescmd } },
 	{ MOD|CTRL,                 XKB_KEY_space,       spawn,            {.v = wallpapercmd } },
 
